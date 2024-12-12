@@ -1,0 +1,14 @@
+mode: max            # temperature mode: max,mean
+interval: 10         # checking interval second
+thresholds:
+  - temperature: 50  # 50<=temp<60, duty cycle=50%
+    duty-cycle: 50
+  - temperature: 60  # 60<=temp<70, duty cycle=60%
+    duty-cycle: 60
+  - temperature: 70  # 70<=temp<90, duty cycle=90%
+    duty-cycle: 70
+  - temperature: 90  # 90<=temp, duty cycle=100%
+    duty-cycle: 100
+pwd-ids: [2, 3, 4, 5]
+gpu-debug: false
+ipmi-debug: false
