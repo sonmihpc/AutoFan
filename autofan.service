@@ -1,0 +1,14 @@
+[Unit]
+Description=AutoFan
+StartLimitIntervalSec=20
+
+[Service]
+Type=notify
+ExecStart=/usr/sbin/autofan -c /etc/autofan/config.yaml
+Restart=on-failure
+KillMode=process
+Restart=always
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target
