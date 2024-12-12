@@ -27,6 +27,9 @@ install -m 0744 autofan %{buildroot}/%{_sbindir}/autofan
 install -m 0644 config.yaml %{buildroot}/%{_sysconfdir}/autofan/config.yaml
 install -m 0644 autofan.service %{buildroot}/%{_unitdir}/autofan.service
 
+%post
+systemctl enable autofan --now
+
 %files
 %{_sbindir}/autofan
 %{_sysconfdir}/autofan/config.yaml
