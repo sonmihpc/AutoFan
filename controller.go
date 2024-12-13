@@ -39,28 +39,30 @@ func (c *Controller) Execute(dutyCycle int) {
 }
 
 func (c *Controller) Run() {
-	ticker := time.NewTicker(time.Second * time.Duration(c.interval))
-	for {
-		select {
-		case <-ticker.C:
-			var temp int
-			if c.mode == MaxMode {
-				temp = c.devices.GetMaxTemperature()
-			} else {
-				temp = c.devices.GetMeanTemperature()
+	go func() {
+		ticker := time.NewTicker(time.Second * time.Duration(c.interval))
+		for {
+			select {
+			case <-ticker.C:
+				var temp int
+				if c.mode == MaxMode {
+					temp = c.devices.GetMaxTemperature()
+				} else {
+					temp = c.devices.GetMeanTemperature()
+				}
+				dutyCycle := c.thresholds.GetDutyCycleFromTemperature(temp)
+				if dutyCycle != c.lastDutyCycle {
+					c.Execute(dutyCycle)
+					log.Printf("Temperature=%v Celsius and setup duty-cycle=%v%%", temp, dutyCycle)
+					c.lastDutyCycle = dutyCycle
+				} else {
+					log.Printf("DutyCycle did not change")
+				}
+			default:
+				time.Sleep(time.Second * time.Duration(c.interval))
 			}
-			dutyCycle := c.thresholds.GetDutyCycleFromTemperature(temp)
-			if dutyCycle != c.lastDutyCycle {
-				c.Execute(dutyCycle)
-				log.Printf("Temperature=%v Celsius and setup duty-cycle=%v%%", temp, dutyCycle)
-				c.lastDutyCycle = dutyCycle
-			} else {
-				log.Printf("DutyCycle did not change")
-			}
-		default:
-			time.Sleep(time.Second * time.Duration(c.interval))
 		}
-	}
+	}()
 }
 
 func NewController(interval int, mode Mode, pwdIds []int, executor Executor, devices GpuDevicesInterface, thresholds Thresholds) *Controller {

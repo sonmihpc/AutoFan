@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/coreos/go-systemd/v22/daemon"
+	"github.com/coreos/go-systemd/daemon"
 	"log"
 	"os"
 	"os/signal"

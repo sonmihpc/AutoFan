@@ -4,7 +4,7 @@ go 1.22.5
 
 require (
 	github.com/NVIDIA/go-nvml v0.12.4-0
-	github.com/coreos/go-systemd/v22 v22.3.2
+	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
 	github.com/spf13/viper v1.19.0
 )
 
